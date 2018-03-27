@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@atlaskit/css-reset": "^1.2.0",
+    "@atlaskit/reduced-ui-pack": "^8.7.0",
+    "react-bar-chart": "^0.1.2"
+  }
+}

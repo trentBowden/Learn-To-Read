@@ -1,0 +1,217 @@
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/react-chartjs-2/2.7.0/react-chartjs-2.min.js"></script>-->
+<script type="text/babel">
+class Datapage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      teacherSlug: 'life',
+      studentSlug: 'josh',
+      passageId: 1
+    }
+  }
+
+  sendGet(api) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:3000/api/"+api, false);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+    var response = JSON.parse(xhttp.responseText);
+    console.log('response: ' +JSON.stringify(response))
+    return(response)
+  }
+
+  getTeachersStudents() {
+    let response = this.sendGet('teachers/students/'+this.state.teacherSlug)
+    return(response.data)
+  }
+
+  getTeacherNumStudents(slug) {
+    let response = this.sendGet('teachers/numStudents/'+slug)
+    return(response.data[0].count)
+  }
+
+  getAllTeachers() {
+    let response = this.sendGet('teachers')
+    return(response.data)
+  }
+
+  getTeacherName(slug) {
+    let response = this.sendGet('teachers/name/'+slug)
+    return(JSON.stringify(response.data))
+  }
+
+  getStudentLevelHistory() {
+    let response = this.sendGet('students/getLevelHistory/'+this.state.studentSlug)
+    return(response.data)
+  }
+
+  getStudentPassageHistory() {
+    let response = this.sendGet('students/getPassages/'+this.state.studentSlug)
+    return(response.data)
+  }
+
+  getPassage() {
+    let response = this.sendGet('passages/text/'+this.state.passageId)
+    return(response.data)
+  }
+
+  getPassageRating() {
+    let response = this.sendGet('passages/rating/'+this.state.passageId)
+    return(response.data)
+  }
+
+  setTeacherSlug(slug) {
+    this.state.teacherSlug = slug
+    this.forceUpdate()
+  }
+
+  setStudentSlug(slug) {
+    this.state.studentSlug = slug
+    this.forceUpdate()
+  }
+
+  setPassageId(id) {
+    this.state.passageId = id
+    this.forceUpdate()
+  }
+
+  render() {
+    let teachers = this.getAllTeachers()
+    let teacherTable = (
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Organisation</th>
+            <th>Number of Students</th>
+            <th>Email</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          {teachers.map((teacher) => {
+            return(
+              <tr key={teacher.slug}>
+                <td>{teacher.name}</td>
+                <td>{teacher.org}</td>
+                <td>{this.getTeacherNumStudents(teacher.slug)}</td>
+                <td>{teacher.email}</td>
+                <td><div onClick={() => this.setTeacherSlug(teacher.slug)}>{teacher.slug}</div></td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+
+    let students = this.getTeachersStudents()
+    let studentsTable = (
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Current Level</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          {students.map((student) => {
+            return(
+              <tr key={student.slug}>
+                <td>{student.name}</td>
+                <td>{student.currentlvl}</td>
+                <td><div onClick={() => this.setStudentSlug(student.slug)}>{student.slug}</div></td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+
+    let levelHistory = this.getStudentLevelHistory()
+    let levelTable = (
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Level</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {levelHistory.map((level) => {
+            return(
+              <tr key={level.id}>
+                <td>{level.student}</td>
+                <td>{level.level}</td>
+                <td>{level.datecompleted}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+
+    let passageHistory = this.getStudentPassageHistory()
+    let passageTable = (
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Time to read (s)</th>
+            <th>Percent of words correct</th>
+            <th>Date read</th>
+            <th>Passage id</th>
+          </tr>
+        </thead>
+        <tbody>
+          {passageHistory.map((passageH) => {
+            return(
+              <tr key={passageH.id}>
+                <td>{passageH.student}</td>
+                <td>{passageH.seconds}</td>
+                <td>{passageH.percentage}</td>
+                <td>{passageH.dateread}</td>
+                <td><div onClick={() => this.setPassageId(passageH.passage)}>{passageH.passage}</div></td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+
+    let passage = this.getPassage()
+    let passageRating = this.getPassageRating()
+
+    return (
+      <div>
+        Click on your username to see data on your students.
+        {teacherTable}
+        <br />
+        <br />
+        How your students are doing. To see more data on a student, click their username.
+        {studentsTable}
+        <br />
+        <br />
+        {levelTable}
+        <br />
+        <br />
+        {passageTable}
+        <br />
+        <br />
+        rating: {passageRating}<br />
+        text: {passage}
+      </div>
+    );
+  }
+}
+ReactDOM.render(
+    <Datapage />,
+    document.getElementById('root')
+);
+</script>

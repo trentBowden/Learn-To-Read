@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico">
+    <title>Learn to Read!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/annyang.min.js"></script>
+
+    <link rel="stylesheet" href="node_modules/@atlaskit/reduced-ui-pack/dist/bundle.css" />
+
+</head>
+<body>
+    <div class="buffer-container"></div>
+
+<!--Login Screen-->
+<div class="thing-around-test-container">
+<div class="test-container" id="firstScreenContainer">
+<div class="flex-container" id="firstScreen"><center>
+    <img src="img/Atlassian-Book.svg" width="100px"/></center>
+    <br>
+    <div class="form">
+        Student name:
+        
+        <br>
+        <input
+        type="text"
+        class="ak-field-text ak-field__size-medium"
+        placeholder="e.g. Mike Cannon-Brookes"
+        style="margin-top:8px;"
+      />
+      <p>
+          <!--//Control the language to be spoken at the beginning. In css, create a "selector" element to change the look and feel-->
+            <p>
+            <div id="div_language">
+                <div style="width:48%;float:left;display:inline"><select id="select_language" class="ak-field-select" onchange="updateCountry()"></select>
+                </div>
+                &nbsp;&nbsp;
+                <div style="width:48%;float:right;display:inline">
+                <select id="select_dialect" class="ak-field-select" ></select>
+                </div>
+            </div>
+
+<br><br>
+        <a class="ak-button ak-button__appearance-primary nextLevelPlease" onclick="startButton(event)">Start!</a>
+    </div>
+</div>
+</div>
+
+<!--Level 1-->
+<div class="test-container hideDiv" id="readingContainer">
+    <div class="info-container">
+        <div id="info-container-hide">
+            <!--Start -->
+        <div id="info" class="left">
+            <!--<p id="info_start">Click on the microphone icon and begin speaking.</p>-->
+            <p id="info_speak_now">Speak now.</p>
+            <p id="info_no_speech">No speech was detected. You may need to adjust your
+                <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+                    microphone settings</a>.</p>
+            <p id="info_no_microphone" style="display:none">
+                No microphone was found. Ensure that a microphone is installed and that
+                <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+                    microphone settings</a> are configured correctly.</p>
+            <p id="info_allow">Click the "Allow" button above to enable your microphone.</p>
+            <p id="info_denied">Permission to use microphone was denied.</p>
+            <p id="info_blocked">Permission to use microphone is blocked. To change,
+                go to chrome://settings/contentExceptions#media-stream</p>
+            <p id="info_upgrade">Web Speech API is not supported by this browser.
+                Upgrade to <a href="//www.google.com/chrome">Chrome</a>
+                version 25 or later.</p>
+        </div>
+        <div class="right">
+            <button id="start_button" onclick="startButton(event)">
+                <img id="start_img" src="mic.gif" alt="Start"></button>
+        </div>
+        </div>
+    </div>
+<div class="flex-container hideDiv" id="levelOne">
+
+    <!--<p class="textToRead content" id = "contentL1">Mary had a little lamb</p>-->
+    <p class="textToRead content" id = "contentL1">Mary had a little lamb</p>
+
+    <button class ="nextWord ak-button ak-button__appearance-default">Next Word</button>
+        <div class="dolphins">
+        <img src="img/dolphin-clear.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+    </div>
+</div>
+
+
+<!--Level 2-->
+
+<div class="flex-container hideDiv" id="levelTwo">
+    <p class="textToRead content" id = "contentL2">Its fleece was white as snow</p>
+    <button class ="nextWord ak-button ak-button__appearance-default">Next Word</button>
+    <div class="dolphins">
+        <img src="img/dolphin-full.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+    </div>
+</div>
+
+<!--Level 3-->
+
+<div class="flex-container hideDiv" id="levelThree">
+    <p class="textToRead content" id = "contentL3">Everywhere that Mary went</p>
+    <button class ="nextWord ak-button ak-button__appearance-default">Next Word</button>
+    <div class="dolphins">
+        <img src="img/dolphin-full.svg"/>
+        <img src="img/dolphin-full.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+    </div>
+</div>
+
+<!--Level 4-->
+
+<div class="flex-container hideDiv" id="levelFour">
+    <p class="textToRead content" id = "contentL4">The lamb was sure to go</p>
+    <button class ="nextWord ak-button ak-button__appearance-default">Next Word</button>
+    <div class="dolphins">
+        <img src="img/dolphin-full.svg"/>
+        <img src="img/dolphin-full.svg"/>
+        <img src="img/dolphin-full.svg"/>
+        <img src="img/dolphin-clear.svg"/>
+    </div>
+</div>
+
+<div class="flex-container hideDiv" id="statisticsOne">
+    <center><h1>Good Job!</h1></center> <br>
+<div class="statistics">
+    <img src="img/fox.svg"/>
+    <p><center>You are a fox!</center>
+<!--         <p id = "L1CorrectWords">Correct Words: 100%</p>
+        <p id = "L1TimeTaken">Time taken: -</p>
+        <p id = "L1Mistakes">Words to review: -</p> -->
+    <center><div id = "skippedWords"></div></center>
+    </div>
+</div>
+
+</div> <!-- end test-container -->
+</div> <!-- end thing-around-the-test-container -->
+
+<!--Final Page-->
+<div class="flex-container hideDiv" id="finalPage">
+    Woo good job you did it omg you can read now yay
+</div>
+</body>
+</html>
+<script src="js/controller.js"></script>
+<script src="js/webSpeechDemo.js"></script>
